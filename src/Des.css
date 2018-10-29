@@ -1,0 +1,11 @@
+.section {
+    display: inline;
+    margin-left: 10%;
+    
+}
+.container{
+    margin-top: 50px;
+    margin-right: 10%;
+    margin-left: 10%;
+    display: flex;
+}
