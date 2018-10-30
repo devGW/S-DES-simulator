@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+  <script type="text/javascript">
+    function _p(key, len){
+      var setBit = [];
+      setBit.length = len;
+      for (var i = 0; i < setBit.length; i++) {
+        setBit[i] = (key >> (setBit.length - (i+1))) & 1;
+      }
+      console.log("setBit : "+setBit);
+      var list = [3, 5, 2, 7, 4, 10, 1, 9, 8, 6];
+      var result = [];
+      for (var i = 0; i < len; i++) {
+        result[i] = setBit[list[i]-1];
+      }
+      return result;
+    }
+    function getBit(key){
+      var result = "";
+      for (var i = 0; i < key.length; i++) {
+        result += key[i];
+      }
+      return result;
+    }
+    function _keyLength() {
+      var key = document.getElementById("key").value;
+      if (key < 0 || key > 1023) {
+        alert("키 값 범위 초과\n키 값의 범위는 0 ~ 1023 입니다.");
+        return;
+      } else {
+        var p10 = _p(key, 10);
+        document.getElementById("P10").value = getBit(p10);
+      }
+    }
+  </script>
+
+</head>
+
+<body>
+  <form class="pure-form pure-form-stacked">
+
+    <fieldset>
+      <script type="text/javascript">
+        console.log("hello");
+      </script>
+      <label for="key">Key</label>
+      <input id="key" type="number"/>
+
+      <label for="P10">P10</label>
+      <input id="P10" type="text">
+
+      <label for="Shift1">Shift1</label>
+      <input id="Shift1" type="text">
+
+      <label for="K1">K1</label>
+      <input id="K1" type="text">
+
+      <label for="Shift2">Shift2</label>
+      <input id="Shift2" type="text">
+
+      <label for="K2">K2</label>
+      <input id="K2" type="text">
+
+      <input id="run" type="button" value="실행" onclick="_keyLength()" />
+
+    </fieldset>
+  </form>
+</body>
+
+</html>

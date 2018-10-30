@@ -1,0 +1,95 @@
+$inputWidth: 300px;
+
+$textfieldFontSize: 16px;
+$textfieldPaddingTop: 12px;
+$textfieldMarginTop: 16px;
+$textfieldMarginBottom: 8px;
+$textfieldInputPadding: 8px;
+$textfieldLabelFloatingFontSize: 12px;
+$textfiledLabelHighlightColor: color(secondary);
+$textfieldLabelBorderColor: #aaa;
+$textfieldLabelColor: #666;
+
+@mixin material-animation-default($duration:0.2s) {
+  transition-duration: $duration;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.textfield {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+	margin-top: $textfieldMarginTop;
+	margin-bottom: $textfieldMarginBottom;
+	padding-top: $textfieldPaddingTop;
+	width: $inputWidth;
+  max-width: 100%;
+	color: #212121;
+}
+
+.textfield__input,
+.textfield__label {
+	font-size: $textfieldFontSize;
+	text-align: left;
+  width: 100%;
+}
+
+.textfield__input {
+  display: block;
+  margin: 0;
+	outline: 0;
+  border: none;
+  border-bottom: 1px solid $textfieldLabelBorderColor;
+  background: transparent;
+  padding: $textfieldInputPadding 0;
+}
+
+.textfield__label {
+  display: block;
+  position: absolute;
+  top: $textfieldInputPadding + $textfieldPaddingTop;
+  bottom: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  color: $textfieldLabelColor;
+
+  &:after {
+    visibility: hidden;
+    position: absolute;
+		left: 45%;
+		bottom: 0;
+    background-color: $textfiledLabelHighlightColor;
+    width: 10px;
+    height: 2px;
+    content: '';
+		@include material-animation-default();
+  }
+}
+
+.textfield--floatingLabel {
+	.textfield__label {
+		@include material-animation-default();
+	}
+
+	.textfield__input:focus + .textfield__label,
+	.textfield__input:valid + .textfield__label {
+		visibility: visible;
+		top: 0;
+		font-size : $textfieldLabelFloatingFontSize;
+	}
+
+	.textfield__input:focus + .textfield__label {
+		color: $textfiledLabelHighlightColor;
+
+		&:after {
+			visibility: visible;
+			left: 0;
+			width: 100%;
+		}
+	}
+}
+
+.absolute-center {
+	height: 180px;
+}
