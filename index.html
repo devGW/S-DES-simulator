@@ -1,74 +1,183 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
   <meta charset="utf-8">
   <title></title>
   <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+  <script type="text/javascript" src="key.js"></script>
   <script type="text/javascript">
-    function _p(key, len){
+    function _fk(key, subkey) {
+      var lk = item >> 4;
+      var rk = item & 0xF;
+      return ((lk ^ _F(rk, subkey)) << 4) | r;
+    }
+
+
+
+    function _ip(key, len, ch) {
       var setBit = [];
-      setBit.length = len;
-      for (var i = 0; i < setBit.length; i++) {
-        setBit[i] = (key >> (setBit.length - (i+1))) & 1;
-      }
-      console.log("setBit : "+setBit);
-      var list = [3, 5, 2, 7, 4, 10, 1, 9, 8, 6];
+      setBit = _setBit(key, len);
+      var list = (ch == 1 ? [2, 6, 3, 1, 4, 8, 5, 7] :
+        ch == 2 ? [4, 1, 3, 5, 7, 2, 8, 6] : []);
       var result = [];
       for (var i = 0; i < len; i++) {
-        result[i] = setBit[list[i]-1];
+        result[i] = setBit[list[i] - 1];
       }
       return result;
     }
-    function getBit(key){
-      var result = "";
-      for (var i = 0; i < key.length; i++) {
-        result += key[i];
-      }
-      return result;
-    }
-    function _keyLength() {
+
+    function _keyRun() {
       var key = document.getElementById("key").value;
       if (key < 0 || key > 1023) {
         alert("키 값 범위 초과\n키 값의 범위는 0 ~ 1023 입니다.");
         return;
       } else {
         var p10 = _p(key, 10);
-        document.getElementById("P10").value = getBit(p10);
+        var shift1 = _shl(p10, 1);
+        var k1 = _p(shift1, 8);
+        var shift2 = _shl(shift1, 2);
+        var k2 = _p(shift2, 8);
+        document.getElementById("P10").value = _getBit(p10);
+        document.getElementById("Shift1").value = _getBit(shift1);
+        document.getElementById("K1").value = _getBit(k1);
+        document.getElementById("Shift2").value = _getBit(shift2);
+        document.getElementById("K2").value = _getBit(k2);
+
+        var plaintext1 = document.getElementById("plaintext1").value;
+
+        for (var i = 0; i < plaintext1.length; i++) {
+          if (plaintext1[i].charCodeAt(0) > 255) {
+            var setBit = [plaintext1[i].charCodeAt(0) >> 8, plaintext1[i].charCodeAt(0) & 255];
+            for (var j = 0; j < setBit.length; j++) {
+              var ip = _ip(setBit[j], 8, 1);
+              var fk = _fk(ip, k1);
+
+            }
+          }
+        }
       }
     }
   </script>
+  <style media="screen">
+    .form{
+    display : flex;
+    float : left;
+    margin-top : 5%;
+  }
+   .section{
+     margin-left : 20%;
+   }
 
+</style>
 </head>
 
 <body>
-  <form class="pure-form pure-form-stacked">
+  <div class="form">
+    <section class="section">
+      <form class="pure-form pure-form-stacked">
+        <label for="plaintext1">문장</label>
+        <input id="plaintext1" type="text"/>
 
-    <fieldset>
-      <script type="text/javascript">
-        console.log("hello");
-      </script>
-      <label for="key">Key</label>
-      <input id="key" type="number"/>
+        <label for="IP1">IP</label>
+        <input id="IP1" type="text">
 
-      <label for="P10">P10</label>
-      <input id="P10" type="text">
+        <label for="fk1">fk</label>
+        <input id="fk1" type="text">
 
-      <label for="Shift1">Shift1</label>
-      <input id="Shift1" type="text">
+        <label for="SW1">SW</label>
+        <input id="SW1" type="text">
 
-      <label for="K1">K1</label>
-      <input id="K1" type="text">
+        <label for="IPm1">IP-</label>
+        <input id="IPm1" type="text">
 
-      <label for="Shift2">Shift2</label>
-      <input id="Shift2" type="text">
+        <label for="encrypt1">암호문</label>
+        <input id="encrypt1" type="text">
 
-      <label for="K2">K2</label>
-      <input id="K2" type="text">
 
-      <input id="run" type="button" value="실행" onclick="_keyLength()" />
 
-    </fieldset>
-  </form>
+
+
+
+
+      </form>
+    </section>
+
+    <section class="section">
+      <form class="pure-form pure-form-stacked">
+        <label for="key">Key</label>
+        <input id="key" type="number"/>
+
+        <label for="P10">P10</label>
+        <input id="P10" type="text">
+
+        <label for="Shift1">Shift1</label>
+        <input id="Shift1" type="text">
+
+        <label for="K1">K1</label>
+        <input id="K1" type="text">
+
+        <label for="Shift2">Shift2</label>
+        <input id="Shift2" type="text">
+
+        <label for="K2">K2</label>
+        <input id="K2" type="text">
+
+        <div class="button">
+          <button type="button" name="button" onclick="_keyRun()" height="100"></button>
+        </div>
+      </form>
+    </section>
+
+    <section class="section">
+      <form class="pure-form pure-form-stacked">
+        <label for="plaintext2">문장</label>
+        <input id="plaintext2" type="text"/>
+
+        <label for="IP2">IP</label>
+        <input id="IP2" type="text">
+
+        <label for="fk2">fk</label>
+        <input id="f21" type="text">
+
+        <label for="SW2">SW</label>
+        <input id="SW2" type="text">
+
+        <label for="IPm2">IP-</label>
+        <input id="IPm2" type="text">
+
+        <label for="encrypt2">암호문</label>
+        <input id="encrypt2" type="text">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </form>
+    </section>
+
+  </div>
 </body>
 
 </html>
