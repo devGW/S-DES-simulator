@@ -7,12 +7,61 @@
   <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
   <script type="text/javascript" src="key.js"></script>
   <script type="text/javascript">
-    function _fk(key, subkey) {
-      var lk = item >> 4;
-      var rk = item & 0xF;
-      return ((lk ^ _F(rk, subkey)) << 4) | r;
+    function _fk(key, subKey) {
+      var rk = [];
+      var lk = [];
+      for (var i = 0; i < key.length; i++) {
+        i < 4 ? lk[i] = key[i] : rk[i - 4] = key[i];
+      }
+
+      return _setBit(((_convertTen(lk) ^ _F(rk, subKey)) << 4) | _convertTen(rk), 8);
     }
 
+    function _F(rk, subKey) {
+
+      var s0 = [
+        [1, 0, 3, 2],
+        [3, 2, 1, 0],
+        [0, 2, 1, 3],
+        [3, 1, 3, 2]
+      ];
+      var s1 = [
+        [0, 1, 2, 3],
+        [2, 0, 1, 3],
+        [3, 0, 1, 0],
+        [2, 1, 0, 3]
+      ];
+
+      var list = [4, 1, 2, 3, 2, 3, 4, 1];
+
+      var ep = [];
+      var p = [];
+      for (var i = 0; i < 8; i++) {
+        ep[i] = rk[list[i] - 1];
+        p[i] = ep[i] ^ subKey[i];
+      }
+
+      var index = [];
+      console.log("p : " + p);
+      index = [
+        p[0].toString() + p[3].toString(),
+        p[1].toString() + p[2].toString(),
+        p[4].toString() + p[7].toString(),
+        p[5].toString() + p[6].toString()
+      ];
+      var sbox = _setBit(s0[_convertTen(index[0])][_convertTen(index[1])], 2).concat(_setBit(s0[_convertTen(index[2])][_convertTen(index[3])], 2));
+      sbox = _p(sbox, 4);
+
+
+      var result = 0;
+      result = _convertTen(sbox);
+      return result;
+    }
+
+    function _sw(key) {
+      key = _convertTen(key);
+      return _setBit(((key & 0xF) << 4) | (key >> 4), 8);
+    }
 
 
     function _ip(key, len, ch) {
@@ -45,16 +94,47 @@
         document.getElementById("K2").value = _getBit(k2);
 
         var plaintext1 = document.getElementById("plaintext1").value;
-
+        var enc = "";
         for (var i = 0; i < plaintext1.length; i++) {
+
           if (plaintext1[i].charCodeAt(0) > 255) {
+
             var setBit = [plaintext1[i].charCodeAt(0) >> 8, plaintext1[i].charCodeAt(0) & 255];
             for (var j = 0; j < setBit.length; j++) {
               var ip = _ip(setBit[j], 8, 1);
               var fk = _fk(ip, k1);
+              var sw = _sw(fk);
+              var fk2 = _fk(sw, k2);
+              var ipm1 = _ip(_convertTen(fk2), 8 , 2);
+              enc += String.fromCharCode(_convertTen(ipm1));
 
+              document.getElementById("IP1").value = _getBit(ip);
+              document.getElementById("fk1").value = _getBit(fk);
+              document.getElementById("SW1").value = _getBit(sw);
+              document.getElementById("fk2").value = _getBit(fk2);
+              document.getElementById("IPm1").value = _getBit(ipm1);
+              document.getElementById("encrypt1").value = enc;
             }
+          } else {
+            var ip = _ip(plaintext1[i].charCodeAt(0), 8, 1);
+            var fk = _fk(ip, k1);
+            var sw = _sw(fk);
+            var fk2 = _fk(sw, k2);
+            var ipm1 = _ip(_convertTen(fk2), 8 , 2);
+            enc += String.fromCharCode(_convertTen(ipm1));
+
+            document.getElementById("IP1").value = _getBit(ip);
+            document.getElementById("fk1").value = _getBit(fk);
+            document.getElementById("SW1").value = _getBit(sw);
+            document.getElementById("fk2").value = _getBit(fk2);
+            document.getElementById("IPm1").value = _getBit(ipm1);
+            document.getElementById("encrypt1").value = enc;
           }
+          document.getElementById("encrypt1").value = enc;
+
+        }
+        
+
         }
       }
     }
@@ -88,17 +168,14 @@
         <label for="SW1">SW</label>
         <input id="SW1" type="text">
 
+        <label for="fk2">fk</label>
+        <input id="fk2" type="text">
+
         <label for="IPm1">IP-</label>
         <input id="IPm1" type="text">
 
         <label for="encrypt1">암호문</label>
         <input id="encrypt1" type="text">
-
-
-
-
-
-
 
       </form>
     </section>
@@ -148,6 +225,61 @@
 
         <label for="encrypt2">암호문</label>
         <input id="encrypt2" type="text">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
