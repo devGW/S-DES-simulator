@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title></title>
   <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+  <link rel="stylesheet" href="form.css">
   <script type="text/javascript" src="key.js"></script>
   <script type="text/javascript" src="encrytion.js"></script>
   <script type="text/javascript">
@@ -124,7 +125,7 @@
                 document.getElementById("IPm2").value = _getBit(ipm1);
                 await sleep(100);
                 dec = String.fromCharCode(decBit);
-                document.getElementById("plaintext2").value == "" ? document.getElementById("plaintext2").value = dec : document.getElementById("plaintext2").value = decF+dec;
+                document.getElementById("plaintext2").value == "" ? document.getElementById("plaintext2").value = dec : document.getElementById("plaintext2").value = decF + dec;
                 await sleep(100);
               }
               decF += dec;
@@ -163,7 +164,6 @@
    .section{
      margin-left : 20%;
    }
-
 </style>
 </head>
 
@@ -191,7 +191,6 @@
 
         <label for="encrypt1">암호문</label>
         <input id="encrypt1" type="text">
-
       </form>
     </section>
 
@@ -215,9 +214,11 @@
         <label for="K2">K2</label>
         <input id="K2" type="text">
 
-        <div class="button">
-          <button type="button" name="button" onclick="_keyRun()" height="100"></button>
+        <div class="container">
+          <button  class="btn-1" name="button" onclick="_keyRun()">RUN</button>
         </div>
+
+
       </form>
     </section>
 
@@ -243,6 +244,37 @@
 
         <label for="encrypt2">암호문</label>
         <input id="encrypt2" type="text">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
       </form>
