@@ -9,7 +9,14 @@ body {
   margin: 0;
   background-color : white;
 }
-
+.form{
+display : flex;
+float : left;
+margin-top : 5%;
+}
+.section{
+ margin-left : 20%;
+}
 
 #footer {
    position:fixed;

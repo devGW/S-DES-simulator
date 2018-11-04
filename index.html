@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+  <link rel="stylesheet" href="form.css">
+  <script type="text/javascript" src="key.js"></script>
+  <script type="text/javascript" src="encrytion.js"></script>
+  <script type="text/javascript" src="run.js"></script>
+</head>
+
+<body>
+  <nav class="demo imponent">
+    <a href="#" class="brand">
+    <img class="logo" src="./img/tu.png" />
+    <span>S-DES</span>
+  </a>
+  </nav>
+
+  <div class="form">
+    <section class="section">
+      <form class="pure-form pure-form-stacked">
+        <label for="plaintext1">문장</label>
+        <input id="plaintext1" type="text"/>
+
+        <label for="IP1">IP</label>
+        <input id="IP1" type="text">
+
+        <label for="fk1">fk</label>
+        <input id="fk1" type="text">
+
+        <label for="SW1">SW</label>
+        <input id="SW1" type="text">
+
+        <label for="fk2">fk</label>
+        <input id="fk2" type="text">
+
+        <label for="IPm1">IP-</label>
+        <input id="IPm1" type="text">
+
+        <label for="encrypt1">암호문</label>
+        <input id="encrypt1" type="text">
+      </form>
+    </section>
+
+    <section class="section">
+      <form class="pure-form pure-form-stacked">
+        <label for="key">Key</label>
+        <input id="key" type="number"/>
+
+        <label for="P10">P10</label>
+        <input id="P10" type="text">
+
+        <label for="Shift1">Shift1</label>
+        <input id="Shift1" type="text">
+
+        <label for="K1">K1</label>
+        <input id="K1" type="text">
+
+        <label for="Shift2">Shift2</label>
+        <input id="Shift2" type="text">
+
+        <label for="K2">K2</label>
+        <input id="K2" type="text">
+        <div class="container">
+          <button class="error" type="button" name="button" onclick="_keyRun()" style="margin-left:10%">RUN</button>
+          <button class="error" type="button" name="button" onclick="_reload()" style="margin-left:10%">REROAD</button>
+        </div>
+        <br><br><br><br>
+
+
+      </form>
+    </section>
+
+    <section class="section">
+      <form class="pure-form pure-form-stacked">
+        <label for="plaintext2">문장</label>
+        <input id="plaintext2" type="text"/>
+
+        <label for="IPm2">IP-</label>
+        <input id="IPm2" type="text">
+
+        <label for="fk2">fk</label>
+        <input id="fkTwo" type="text">
+
+        <label for="SW2">SW</label>
+        <input id="SW2" type="text">
+
+        <label for="fkOne">fk</label>
+        <input id="fkOne" type="text">
+
+        <label for="IP2">IP</label>
+        <input id="IP2" type="text">
+
+        <label for="encrypt2">암호문</label>
+        <input id="encrypt2" type="text">
+      </form>
+    </section>
+</div>
+<div id="footer">
+  <p> Tongmyong University 14110088 정건우 | <a href="https://github.com/devGW" target="_blank">gitHub</a> </p>
+</div>
+</body>
+
+</html>
