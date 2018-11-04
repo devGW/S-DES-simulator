@@ -6,137 +6,152 @@
   <title></title>
   <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
   <script type="text/javascript" src="key.js"></script>
+  <script type="text/javascript" src="encrytion.js"></script>
   <script type="text/javascript">
-    function _fk(key, subKey) {
-      var rk = [];
-      var lk = [];
-      for (var i = 0; i < key.length; i++) {
-        i < 4 ? lk[i] = key[i] : rk[i - 4] = key[i];
-      }
-
-      return _setBit(((_convertTen(lk) ^ _F(rk, subKey)) << 4) | _convertTen(rk), 8);
-    }
-
-    function _F(rk, subKey) {
-
-      var s0 = [
-        [1, 0, 3, 2],
-        [3, 2, 1, 0],
-        [0, 2, 1, 3],
-        [3, 1, 3, 2]
-      ];
-      var s1 = [
-        [0, 1, 2, 3],
-        [2, 0, 1, 3],
-        [3, 0, 1, 0],
-        [2, 1, 0, 3]
-      ];
-
-      var list = [4, 1, 2, 3, 2, 3, 4, 1];
-
-      var ep = [];
-      var p = [];
-      for (var i = 0; i < 8; i++) {
-        ep[i] = rk[list[i] - 1];
-        p[i] = ep[i] ^ subKey[i];
-      }
-
-      var index = [];
-      console.log("p : " + p);
-      index = [
-        p[0].toString() + p[3].toString(),
-        p[1].toString() + p[2].toString(),
-        p[4].toString() + p[7].toString(),
-        p[5].toString() + p[6].toString()
-      ];
-      var sbox = _setBit(s0[_convertTen(index[0])][_convertTen(index[1])], 2).concat(_setBit(s0[_convertTen(index[2])][_convertTen(index[3])], 2));
-      sbox = _p(sbox, 4);
-
-
-      var result = 0;
-      result = _convertTen(sbox);
-      return result;
-    }
-
-    function _sw(key) {
-      key = _convertTen(key);
-      return _setBit(((key & 0xF) << 4) | (key >> 4), 8);
-    }
-
-
-    function _ip(key, len, ch) {
-      var setBit = [];
-      setBit = _setBit(key, len);
-      var list = (ch == 1 ? [2, 6, 3, 1, 4, 8, 5, 7] :
-        ch == 2 ? [4, 1, 3, 5, 7, 2, 8, 6] : []);
-      var result = [];
-      for (var i = 0; i < len; i++) {
-        result[i] = setBit[list[i] - 1];
-      }
-      return result;
+    function sleep(t) {
+      return new Promise(resolve => setTimeout(resolve, t));
     }
 
     function _keyRun() {
+
       var key = document.getElementById("key").value;
-      if (key < 0 || key > 1023) {
-        alert("키 값 범위 초과\n키 값의 범위는 0 ~ 1023 입니다.");
-        return;
-      } else {
-        var p10 = _p(key, 10);
-        var shift1 = _shl(p10, 1);
-        var k1 = _p(shift1, 8);
-        var shift2 = _shl(shift1, 2);
-        var k2 = _p(shift2, 8);
-        document.getElementById("P10").value = _getBit(p10);
-        document.getElementById("Shift1").value = _getBit(shift1);
-        document.getElementById("K1").value = _getBit(k1);
-        document.getElementById("Shift2").value = _getBit(shift2);
-        document.getElementById("K2").value = _getBit(k2);
-
-        var plaintext1 = document.getElementById("plaintext1").value;
-        var enc = "";
-        for (var i = 0; i < plaintext1.length; i++) {
-
-          if (plaintext1[i].charCodeAt(0) > 255) {
-
-            var setBit = [plaintext1[i].charCodeAt(0) >> 8, plaintext1[i].charCodeAt(0) & 255];
-            for (var j = 0; j < setBit.length; j++) {
-              var ip = _ip(setBit[j], 8, 1);
+      (async function() {
+        if (key < 0 || key > 1023) {
+          alert("키 값 범위 초과\n키 값의 범위는 0 ~ 1023 입니다.");
+          return;
+        } else {
+          var p10 = _p(key, 10);
+          var shift1 = _shl(p10, 1);
+          var k1 = _p(shift1, 8);
+          var shift2 = _shl(shift1, 2);
+          var k2 = _p(shift2, 8);
+          document.getElementById("P10").value = _getBit(p10);
+          await sleep(100);
+          document.getElementById("Shift1").value = _getBit(shift1);
+          await sleep(100);
+          document.getElementById("K1").value = _getBit(k1);
+          await sleep(100);
+          document.getElementById("Shift2").value = _getBit(shift2);
+          await sleep(100);
+          document.getElementById("K2").value = _getBit(k2);
+          await sleep(100);
+          var plaintext1 = document.getElementById("plaintext1").value;
+          var enc = "";
+          var encF = "";
+          var dec = "";
+          var decF = "";
+          //암호화
+          for (var i = 0; i < plaintext1.length; i++) {
+            var decBit = 0;
+            if (plaintext1[i].charCodeAt(0) > 255) {
+              var list1 = [];
+              var list2 = [];
+              var list3 = [];
+              var setBit = [plaintext1[i].charCodeAt(0) >> 8, plaintext1[i].charCodeAt(0) & 255];
+              for (var j = 0; j < setBit.length; j++) {
+                var ip = _ip(setBit[j], 8, 1);
+                var fk = _fk(ip, k1);
+                var sw = _sw(fk);
+                var fk2 = _fk(sw, k2);
+                var ipm1 = _ip(_convertTen(fk2), 8, 2);
+                decBit |= _convertTen(ipm1);
+                j == 0 ? decBit = decBit << 8 : decBit = decBit;
+                document.getElementById("IP1").value = _getBit(ip); // set ip
+                await sleep(100);
+                document.getElementById("fk1").value = _getBit(fk); // set fk
+                await sleep(100);
+                document.getElementById("SW1").value = _getBit(sw); // fk switch
+                await sleep(100);
+                document.getElementById("fk2").value = _getBit(fk2); // set second f2
+                await sleep(100);
+                document.getElementById("IPm1").value = _getBit(ipm1); // set ip-1
+                await sleep(100);
+                enc = String.fromCharCode(decBit);
+                document.getElementById("encrypt1").value == "" ? document.getElementById("encrypt1").value = enc : document.getElementById("encrypt1").value = encF + enc;
+              }
+              encF += enc;
+              document.getElementById("encrypt2").value = encF; // set decrytion plaintext
+              await sleep(100);
+            } else {
+              var ip = _ip(plaintext1[i].charCodeAt(0), 8, 1);
               var fk = _fk(ip, k1);
               var sw = _sw(fk);
               var fk2 = _fk(sw, k2);
-              var ipm1 = _ip(_convertTen(fk2), 8 , 2);
+              var ipm1 = _ip(_convertTen(fk2), 8, 2);
+              var sum;
               enc += String.fromCharCode(_convertTen(ipm1));
 
               document.getElementById("IP1").value = _getBit(ip);
+              await sleep(100);
               document.getElementById("fk1").value = _getBit(fk);
+              await sleep(100);
               document.getElementById("SW1").value = _getBit(sw);
+              await sleep(100);
               document.getElementById("fk2").value = _getBit(fk2);
+              await sleep(100);
               document.getElementById("IPm1").value = _getBit(ipm1);
+              await sleep(100);
               document.getElementById("encrypt1").value = enc;
+              await sleep(100);
+              document.getElementById("encrypt2").value = enc;
+              await sleep(100);
             }
-          } else {
-            var ip = _ip(plaintext1[i].charCodeAt(0), 8, 1);
-            var fk = _fk(ip, k1);
-            var sw = _sw(fk);
-            var fk2 = _fk(sw, k2);
-            var ipm1 = _ip(_convertTen(fk2), 8 , 2);
-            enc += String.fromCharCode(_convertTen(ipm1));
-
-            document.getElementById("IP1").value = _getBit(ip);
-            document.getElementById("fk1").value = _getBit(fk);
-            document.getElementById("SW1").value = _getBit(sw);
-            document.getElementById("fk2").value = _getBit(fk2);
-            document.getElementById("IPm1").value = _getBit(ipm1);
-            document.getElementById("encrypt1").value = enc;
           }
-          document.getElementById("encrypt1").value = enc;
 
-        }
-        
+          //복호화
 
+          for (var i = 0; i < encF.length; i++) {
+            var decBit = 0;
+            if (encF[i].charCodeAt(0) > 255) {
+              var setBit = [encF[i].charCodeAt(0) >> 8, encF[i].charCodeAt(0) & 255];
+              for (var j = 0; j < setBit.length; j++) {
+                var ip = _ip(setBit[j], 8, 1);
+                var fk1 = _fk(ip, k2);
+                var sw = _sw(fk1);
+                var fk2 = _fk(sw, k1);
+                var ipm1 = _ip(_convertTen(fk2), 8, 2);
+                decBit |= _convertTen(ipm1);
+                j == 0 ? decBit = decBit << 8 : decBit = decBit;
+
+                document.getElementById("IP2").value = _getBit(ip);
+                await sleep(100);
+                document.getElementById("fkOne").value = _getBit(fk1);
+                await sleep(100);
+                document.getElementById("SW2").value = _getBit(sw);
+                await sleep(100);
+                document.getElementById("fkTwo").value = _getBit(fk2);
+                await sleep(100);
+                document.getElementById("IPm2").value = _getBit(ipm1);
+                await sleep(100);
+                dec = String.fromCharCode(decBit);
+                document.getElementById("plaintext2").value == "" ? document.getElementById("plaintext2").value = dec : document.getElementById("plaintext2").value = decF+dec;
+                await sleep(100);
+              }
+              decF += dec;
+
+            } else {
+              var ip = _ip(enc[i].charCodeAt(0), 8, 1);
+              var fk1 = _fk(ip, k2);
+              var sw = _sw(fk1);
+              var fk2 = _fk(sw, k1);
+              var ipm1 = _ip(_convertTen(fk2), 8, 2);
+              dec += String.fromCharCode(_convertTen(ipm1));
+              document.getElementById("IP2").value = _getBit(ip);
+              await sleep(100);
+              document.getElementById("fkOne").value = _getBit(fk1);
+              await sleep(100);
+              document.getElementById("SW2").value = _getBit(sw);
+              await sleep(100);
+              document.getElementById("fkTwo").value = _getBit(fk2);
+              await sleep(100);
+              document.getElementById("IPm2").value = _getBit(ipm1);
+              await sleep(100);
+              document.getElementById("plaintext2").value = dec;
+              await sleep(100);
+            }
+          }
         }
-      }
+      })();
     }
   </script>
   <style media="screen">
@@ -211,99 +226,23 @@
         <label for="plaintext2">문장</label>
         <input id="plaintext2" type="text"/>
 
-        <label for="IP2">IP</label>
-        <input id="IP2" type="text">
+        <label for="IPm2">IP-</label>
+        <input id="IPm2" type="text">
 
         <label for="fk2">fk</label>
-        <input id="f21" type="text">
+        <input id="fkTwo" type="text">
 
         <label for="SW2">SW</label>
         <input id="SW2" type="text">
 
-        <label for="IPm2">IP-</label>
-        <input id="IPm2" type="text">
+        <label for="fkOne">fk</label>
+        <input id="fkOne" type="text">
+
+        <label for="IP2">IP</label>
+        <input id="IP2" type="text">
 
         <label for="encrypt2">암호문</label>
         <input id="encrypt2" type="text">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
       </form>
