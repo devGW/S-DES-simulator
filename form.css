@@ -6,9 +6,31 @@ html {
 }
 
 body {
-  margin: 0
+  margin: 0;
+  background-color : white;
 }
 
+
+#footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:60px;
+   width:100%;
+   /* background: rgb(239, 239, 239); */
+  background: rgb(245,245,245);
+   color: #373a3c;
+   line-height: 1.5;
+   font-size: .9rem;
+   margin-bottom: .5rem;
+}
+#footer p {
+   text-align: center;
+}
+.container {
+  align-items: center;
+    margin-top: 40%;
+}
 article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
   display: block
 }
@@ -189,7 +211,6 @@ body {
   color: #111;
   font-size: 1.1em;
   line-height: 1.5;
-  background: #fff
 }
 
 main {
