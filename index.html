@@ -9,6 +9,11 @@
   <script type="text/javascript" src="key.js"></script>
   <script type="text/javascript" src="encrytion.js"></script>
   <script type="text/javascript">
+    function _reload(){
+      location.reload();
+    }
+
+
     function sleep(t) {
       return new Promise(resolve => setTimeout(resolve, t));
     }
@@ -80,7 +85,7 @@
               var fk2 = _fk(sw, k2);
               var ipm1 = _ip(_convertTen(fk2), 8, 2);
               var sum;
-              enc += String.fromCharCode(_convertTen(ipm1));
+              encF += String.fromCharCode(_convertTen(ipm1));
 
               document.getElementById("IP1").value = _getBit(ip);
               await sleep(100);
@@ -92,9 +97,9 @@
               await sleep(100);
               document.getElementById("IPm1").value = _getBit(ipm1);
               await sleep(100);
-              document.getElementById("encrypt1").value = enc;
+              document.getElementById("encrypt1").value = encF;
               await sleep(100);
-              document.getElementById("encrypt2").value = enc;
+              document.getElementById("encrypt2").value = encF;
               await sleep(100);
             }
           }
@@ -129,14 +134,13 @@
                 await sleep(100);
               }
               decF += dec;
-
             } else {
-              var ip = _ip(enc[i].charCodeAt(0), 8, 1);
+              var ip = _ip(encF[i].charCodeAt(0), 8, 1);
               var fk1 = _fk(ip, k2);
               var sw = _sw(fk1);
               var fk2 = _fk(sw, k1);
               var ipm1 = _ip(_convertTen(fk2), 8, 2);
-              dec += String.fromCharCode(_convertTen(ipm1));
+              decF += String.fromCharCode(_convertTen(ipm1));
               document.getElementById("IP2").value = _getBit(ip);
               await sleep(100);
               document.getElementById("fkOne").value = _getBit(fk1);
@@ -147,7 +151,7 @@
               await sleep(100);
               document.getElementById("IPm2").value = _getBit(ipm1);
               await sleep(100);
-              document.getElementById("plaintext2").value = dec;
+              document.getElementById("plaintext2").value = decF;
               await sleep(100);
             }
           }
@@ -168,6 +172,13 @@
 </head>
 
 <body>
+  <nav class="demo imponent">
+    <a href="#" class="brand">
+    <img class="logo" src="./img/tu.png" />
+    <span>S-DES</span>
+  </a>
+  </nav>
+
   <div class="form">
     <section class="section">
       <form class="pure-form pure-form-stacked">
@@ -191,7 +202,6 @@
 
         <label for="encrypt1">암호문</label>
         <input id="encrypt1" type="text">
-
       </form>
     </section>
 
@@ -214,10 +224,11 @@
 
         <label for="K2">K2</label>
         <input id="K2" type="text">
-
         <div class="container">
-          <button type="button" name="button" onclick="_keyRun()">RUN</button>
+          <button type="button" name="button" onclick="_keyRun()" style="margin-left:10%">RUN</button>
+          <button type="button" name="button" onclick="_reload()" style="margin-left:10%">REROAD</button>
         </div>
+        <br><br><br><br>
 
 
       </form>
@@ -245,11 +256,12 @@
 
         <label for="encrypt2">암호문</label>
         <input id="encrypt2" type="text">
-
       </form>
     </section>
-
-  </div>
+</div>
+<div id="footer">
+  <p> Tongmyong University 14110088 정건우 | <a href="https://github.com/devGW" target="_blank">gitHub</a> </p>
+</div>
 </body>
 
 </html>
