@@ -11,8 +11,11 @@ body {
 }
 .form{
 display : flex;
+position: absolute;
+left: 10%;
 float : left;
 margin-top : 5%;
+
 }
 .section{
  margin-left : 20%;
