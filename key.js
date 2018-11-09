@@ -1,27 +1,27 @@
- _p = (key, len) => {
-  var setBit = [];
+ const _p = (key, len) => {
+  let setBit = [];
   setBit = (len == 10 ? _setBit(key, len) : key);
-  var list = (len == 10 ? [3, 5, 2, 7, 4, 10, 1, 9, 8, 6] :
+  const list = (len == 10 ? [3, 5, 2, 7, 4, 10, 1, 9, 8, 6] :
     len == 8 ? [6, 3, 7, 4, 8, 5, 10, 9] : [2, 4, 3, 1]);
-  var result = [];
+  let result = [];
   for (var i = 0; i < len; i++) {
     result[i] = setBit[list[i] - 1];
   }
   return result;
 }
 
-_getBit = key => {
-  var result = "";
-  for (var i = 0; i < key.length; i++) {
+const _getBit = key => {
+  let result = "";
+  for (let i = 0; i < key.length; i++) {
     result += key[i];
   }
   return result;
 }
 
-_convertTen = bin => {
-  var result = 0;
+const _convertTen = bin => {
+  let result = 0;
   if (typeof bin === 'object') {
-    for (i = 0; i < bin.length; i++) {
+    for (let i = 0; i < bin.length; i++) {
       result |= bin[i];
       if (i != bin.length - 1) {
         result = result << 1;
@@ -29,29 +29,29 @@ _convertTen = bin => {
     }
   } else {
     bin *= 1;
-    var result = parseInt(bin, 2);
+    result = parseInt(bin, 2);
   }
   return result;
 }
 
-_setBit = (key, len) => {
-  var result = [];
-  for (var i = 0; i < len; i++) {
+const _setBit = (key, len) => {
+  let result = [];
+  for (let i = 0; i < len; i++) {
     result[i] = (key >> (len - (i + 1))) & 1;
   }
   return result;
 }
 
-_shl = (key, cnt) => {
-  var result = [];
+const _shl = (key, cnt) => {
+  
   if (key.length == 10) {
-    var result = [];
+    let result = [];
     for (var i = 0; i < cnt; i++) {
-      var lk = key.slice(0, 5);
-      var rk = key.slice(5, 10);
-      var lkH = lk[0];
-      var rkH = rk[0];
-      for (var j = 0; j < lk.length; j++) {
+      const lk = key.slice(0, 5);
+      const rk = key.slice(5, 10);
+      const lkH = lk[0];
+      const rkH = rk[0];
+      for (let j = 0; j < lk.length; j++) {
         lk[j] = lk[j + 1];
         rk[j] = rk[j + 1];
         if (j == lk.length - 1) {
@@ -63,13 +63,13 @@ _shl = (key, cnt) => {
     }
     return result;
   } else if (key.length == 8) {
-    var result = [];
+    let result = [];
     for (var i = 0; i < cnt; i++) {
-      var lk = key.slice(0, 4);
-      var rk = key.slice(4, 8);
-      var lkH = lk[0];
-      var rkH = rk[0];
-      for (var j = 0; j < lk.length; j++) {
+      const lk = key.slice(0, 4);
+      const rk = key.slice(4, 8);
+      const lkH = lk[0];
+      const rkH = rk[0];
+      for (let j = 0; j < lk.length; j++) {
         lk[j] = lk[j + 1];
         rk[j] = rk[j + 1];
         if (j == lk.length - 1) {
