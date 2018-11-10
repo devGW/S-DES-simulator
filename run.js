@@ -42,8 +42,8 @@ const _keyRun = async () => {
       }
     ];
 
-    for (let i = 0; i < printKey.length - 1; i++) {
-      printKey[i]();
+    for (let show of printKey) {
+      show();
       await _sleep(100);
     }
 
@@ -80,7 +80,7 @@ const _keyRun = async () => {
       ];
       if (plaintext1[i].charCodeAt(0) > 255) {
         const setBit = [plaintext1[i].charCodeAt(0) >> 8, plaintext1[i].charCodeAt(0) & 255];
-        for (let j = 0; j < setBit.length; j++) {
+        for (let j of setBit.keys()) {
           ip = _ip(setBit[j], 8, 1);
           fk1 = _fk(ip, k1);
           sw = _sw(fk1);
@@ -142,7 +142,7 @@ const _keyRun = async () => {
       ]
       if (encF[i].charCodeAt(0) > 255) {
         const setBit = [encF[i].charCodeAt(0) >> 8, encF[i].charCodeAt(0) & 255];
-        for (let j = 0; j < setBit.length; j++) {
+        for (let j of setBit.keys()) {
           ip = _ip(setBit[j], 8, 1);
           fk1 = _fk(ip, k2);
           sw = _sw(fk1);
@@ -151,8 +151,8 @@ const _keyRun = async () => {
           decBit |= _convertTen(ipm1);
           j == 0 ? decBit = decBit << 8 : decBit = decBit;
 
-          for (let k = 0; k < printDec.length - 1; k++) {
-            printDec[k]();
+          for (let [k, show] of printDec.entries()) {
+            if(k < printDec.length - 1) show();
             await _sleep(100);
           }
           dec = String.fromCharCode(decBit);
@@ -168,8 +168,8 @@ const _keyRun = async () => {
         ipm1 = _ip(_convertTen(fk2), 8, 2);
         decF += String.fromCharCode(_convertTen(ipm1));
 
-        for (let j = 0; j < printDec.length - 1; j++) {
-          printDec[j]();
+        for (let [j, show] of printDec.entries()) {
+          if(j < printDec.length -1) show();
           await _sleep(100);
         }
         printDec[5](decF);

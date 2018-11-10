@@ -4,16 +4,16 @@
   const list = (len == 10 ? [3, 5, 2, 7, 4, 10, 1, 9, 8, 6] :
     len == 8 ? [6, 3, 7, 4, 8, 5, 10, 9] : [2, 4, 3, 1]);
   let result = [];
-  for (var i = 0; i < len; i++) {
-    result[i] = setBit[list[i] - 1];
+  for (let [i, value] of list.entries()) {
+    result[i] = setBit[value - 1];
   }
   return result;
 }
 
 const _getBit = key => {
   let result = "";
-  for (let i = 0; i < key.length; i++) {
-    result += key[i];
+  for (let value of key) {
+    result += value;
   }
   return result;
 }
@@ -21,8 +21,8 @@ const _getBit = key => {
 const _convertTen = bin => {
   let result = 0;
   if (typeof bin === 'object') {
-    for (let i = 0; i < bin.length; i++) {
-      result |= bin[i];
+    for (let [i, value] of bin.entries()) {
+      result |= value;
       if (i != bin.length - 1) {
         result = result << 1;
       }
@@ -51,7 +51,7 @@ const _shl = (key, cnt) => {
       const rk = key.slice(5, 10);
       const lkH = lk[0];
       const rkH = rk[0];
-      for (let j = 0; j < lk.length; j++) {
+      for (let j of lk.keys()) {
         lk[j] = lk[j + 1];
         rk[j] = rk[j + 1];
         if (j == lk.length - 1) {
@@ -69,7 +69,7 @@ const _shl = (key, cnt) => {
       const rk = key.slice(4, 8);
       const lkH = lk[0];
       const rkH = rk[0];
-      for (let j = 0; j < lk.length; j++) {
+      for (let j of lk.keys) {
         lk[j] = lk[j + 1];
         rk[j] = rk[j + 1];
         if (j == lk.length - 1) {
