@@ -9,11 +9,10 @@ const _sleep = t => {
 
 
 const _keyRun = async () => {
-
-  const key = document.getElementById("key").value;
-
+  const keyId = document.getElementById("key");
+  const key = keyId ? keyId.value : undefined;
   if (key < 0 || key > 1023 || key =="") {
-    alert("Key value error\nKey ranges from 0 to 1023.");
+    alert("Key value error\nKey range from 0 to 1023.");
     return;
   } else {
     const p10 = _p(key, 10);
