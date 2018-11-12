@@ -69,7 +69,7 @@ const _shl = (key, cnt) => {
       const rk = key.slice(4, 8);
       const lkH = lk[0];
       const rkH = rk[0];
-      for (let j of lk.keys) {
+      for (let j of lk.keys()) {
         lk[j] = lk[j + 1];
         rk[j] = rk[j + 1];
         if (j == lk.length - 1) {
