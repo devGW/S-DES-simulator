@@ -1,6 +1,6 @@
 const _fk = (key, subKey) => {
-  var rk = [];
-  var lk = [];
+  const rk = [];
+  const lk = [];
   for (let i of key.keys()) {
     i < 4 ? lk[i] = key[i] : rk[i - 4] = key[i];
   }
@@ -54,7 +54,7 @@ const _sw = (key) => {
 const _ip = (key, len, ch) => {
   const setBit = _setBit(key, len);
   const list = (ch == 1 ? [2, 6, 3, 1, 4, 8, 5, 7] :
-    ch == 2 ? [4, 1, 3, 5, 7, 2, 8, 6] : []);
+    ch == 2 && [4, 1, 3, 5, 7, 2, 8, 6]);
   const result = [];
   for (let i = 0; i < len; i++) {
     result[i] = setBit[list[i] - 1];

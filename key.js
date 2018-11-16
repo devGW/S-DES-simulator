@@ -23,9 +23,7 @@ const _convertTen = bin => {
   if (typeof bin === 'object') {
     for (let [i, value] of bin.entries()) {
       result |= value;
-      if (i != bin.length - 1) {
-        result = result << 1;
-      }
+      i !=  bin.length - 1 && (result = result << 1);
     }
   } else {
     bin *= 1;
@@ -54,10 +52,11 @@ const _shl = (key, cnt) => {
       for (let j of lk.keys()) {
         lk[j] = lk[j + 1];
         rk[j] = rk[j + 1];
-        if (j == lk.length - 1) {
-          lk[j] = lkH;
-          rk[j] = rkH;
-        }
+        // if (j == lk.length - 1) {
+        //   lk[j] = lkH;
+        //   rk[j] = rkH;
+        // }
+        j ==  lk.length - 1 && (lk[j] = lkH, rk[j] = rkH)
       }
       key = result = lk.concat(rk);
     }
@@ -72,10 +71,7 @@ const _shl = (key, cnt) => {
       for (let j of lk.keys()) {
         lk[j] = lk[j + 1];
         rk[j] = rk[j + 1];
-        if (j == lk.length - 1) {
-          lk[j] = lkH;
-          rk[j] = rkH;
-        }
+        j ==  lk.length - 1 && (lk[j] = lkH, rk[j] = rkH)
       }
       key = result = lk.concat(rk);
     }
