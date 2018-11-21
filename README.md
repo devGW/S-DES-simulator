@@ -5,7 +5,7 @@ information security project
 ```
 1. 0~1023 범위 내 key 값을 입력한다
 
-2. 암호화 할 평문을 입력한다.
+2. 왼쪽 PlainText 에 암호화 할 평문을 입력한다.
 
 3. RUN 버튼을 누른다.
 
