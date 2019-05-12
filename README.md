@@ -1,7 +1,11 @@
-# S-DES-simulator
+## S-DES-simulator
 information security project
 
+![](img/main.png)
+#
+
 ### 사용 방법
+[S-DES 실행](https://devgw.github.io/S-DES-simulator/index.html)
 ```
 1. 0~1023 범위 내 key 값을 입력한다
 
